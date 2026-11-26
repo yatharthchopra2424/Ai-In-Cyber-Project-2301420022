@@ -260,8 +260,43 @@ def main() -> None:
     add_figure(doc, PLOT_DIR / "12_cross_source_check.png", "Figure 11: Cross-source transfer validation (naive vs. harmonised merge).", 5.4)
     add_figure(doc, SHOT_DIR / "04_dl_vs_ml_comparison_results.png", "Screenshot 5: Assignment 4 Jupyter Notebook — ROC Curves & Learning Curve.", 5.8)
 
-    # ==================== 6. CONCLUSION & REFERENCES ====================
-    add_heading_1(doc, "6. Conclusion, Limitations & References")
+    # ==================== 6. TASK 5: ETHICAL REFLECTION ====================
+    thr_df = pd.read_csv(OUT_DIR / "ethical_threshold_tradeoff.csv")
+    bias_df = pd.read_csv(OUT_DIR / "ethical_bias_simulation.csv")
+
+    add_heading_1(doc, "6. Task 5 — Ethical Reflection & AI Challenges")
+    doc.add_paragraph(
+        "Two operational simulations were run on the Neural Network (MLP) to evaluate ethical risks, bias, "
+        "privacy, and explainability in cybersecurity deployment:"
+    )
+    add_heading_2(doc, "6.1 Threshold Tuning: Blocking Legitimate Users vs. Missing Threats")
+    thr_rows = [
+        [f"{r.threshold:.2f}", f"{r.accuracy:.3f}", f"{r.precision:.3f}", f"{r.recall:.3f}",
+         f"{int(r.false_positives)}", f"{int(r.false_negatives)}", f"{r.fpr_legit_blocked*100:.1f}%"]
+        for _, r in thr_df[thr_df["threshold"].isin([0.1, 0.3, 0.5, 0.7, 0.9])].iterrows()
+    ]
+    add_styled_table(doc, ["Threshold", "Accuracy", "Precision", "Recall", "FP (Legit Blocked)", "FN (Missed)", "FPR (%)"], thr_rows)
+    add_figure(doc, PLOT_DIR / "14_threshold_tradeoff.png", "Figure 12: Ethical trade-off between blocking legitimate users (FPR) and missing threats (FNR).", 5.6)
+
+    add_heading_2(doc, "6.2 Biased Training Data Simulation")
+    bias_rows = [
+        [r.scenario, r.eval_source, f"{r.accuracy:.3f}", f"{r.recall:.3f}", f"{r.fpr_legit_blocked*100:.1f}%"]
+        for _, r in bias_df.iterrows()
+    ]
+    add_styled_table(doc, ["Training Scenario", "Evaluated On", "Accuracy", "Recall", "Legit Blocked (FPR)"], bias_rows)
+    add_figure(doc, PLOT_DIR / "15_bias_simulation.png", "Figure 13: Accuracy disparity and unfair blocking rate under biased training data.", 5.6)
+    add_figure(doc, SHOT_DIR / "05_ethical_reflection_results.png", "Screenshot 6: Task 5 Jupyter Notebook — Ethical Simulation & Analysis.", 5.8)
+
+    doc.add_paragraph(
+        "Ethical, Privacy & Explainability Takeaways: (1) Aggressive thresholds (0.10) block 21.7% of legitimate sites; "
+        "(2) Omitting Dataset B from training drops its accuracy from 89.3% to 76.0% and nearly triples its false-positive "
+        "blocking rate (12.7% to 34.5%); (3) Inspecting live URLs/traffic requires anonymisation to protect user privacy; "
+        "(4) Black-box MLP decisions require post-hoc explainability (SHAP/LIME) and human-in-the-loop appeal."
+    )
+    doc.add_page_break()
+
+    # ==================== 7. CONCLUSION & REFERENCES ====================
+    add_heading_1(doc, "7. Conclusion, Limitations & References")
     doc.add_paragraph(
         "Across 12,408 harmonised websites, SSLfinal_State and URL_of_Anchor are the dominant phishing indicators. "
         "While Logistic Regression and Decision Tree provide fast, interpretable ~90% baselines, Random Forest achieves "
@@ -286,7 +321,11 @@ def main() -> None:
         doc.add_paragraph(r, style="List Bullet")
 
     out_path = REPORT_DIR / "Capstone_Project_Report_Yatharth_Chopra.docx"
-    doc.save(str(out_path))
+    try:
+        doc.save(str(out_path))
+    except PermissionError:
+        out_path = REPORT_DIR / "Capstone_Project_Report_Yatharth_Chopra_Final.docx"
+        doc.save(str(out_path))
     print("Saved", out_path)
 
 

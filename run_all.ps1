@@ -8,6 +8,8 @@ python src/01_validate_setup.py
 python src/02_eda.py
 python src/03_ml_classification.py
 python src/04_dl_comparison.py
+python src/05_ethical_reflection.py
 python src/validate_merge.py
 python src/validate_feature_subset.py
 python src/make_report.py
+python src/make_word_report.py

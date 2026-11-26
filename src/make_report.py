@@ -118,7 +118,7 @@ def main() -> None:
             "<b>Program:</b> B.Tech CSE (Data Science), Semester 7<br/>"
             "<b>Roll No.:</b> 2301420022<br/><br/>"
             "<b>Submitted to:</b> Monika Khatkar<br/>"
-            "<b>Scope:</b> Assignments 1 to 4",
+            "<b>Scope:</b> Tasks 1 to 5 (Full 100-Mark Rubric)",
             CENTER,
         ),
         PageBreak(),
@@ -458,8 +458,48 @@ def main() -> None:
         )
     ]
 
-    # ---------------- 8. Limitations / Conclusion ----------------
-    s += [P("8. Limitations", H1)]
+    # ---------------- 8. Task 5 - Ethical Reflection ----------------
+    thr_df = pd.read_csv(OUT_DIR / "ethical_threshold_tradeoff.csv")
+    bias_df = pd.read_csv(OUT_DIR / "ethical_bias_simulation.csv")
+
+    s += [P("8. Task 5 - Ethical Reflection and AI Challenges", H1)]
+    s += [
+        P(
+            "Deploying AI in cybersecurity introduces operational and ethical risks beyond raw accuracy. Two "
+            "simulations were executed in <i>05_ethical_reflection.py</i> on the Neural Network (MLP):"
+        )
+    ]
+    s += [P("8.1 Threshold Tuning: Blocking Legitimate Users vs. Missing Threats", H2)]
+    thr_rows = [["Threshold", "Accuracy", "Precision", "Recall", "False Pos. (Legit Blocked)", "False Neg. (Threats Missed)", "FPR (%)"]]
+    for _, r in thr_df[thr_df["threshold"].isin([0.1, 0.3, 0.5, 0.7, 0.9])].iterrows():
+        thr_rows.append([
+            f"{r.threshold:.2f}", f"{r.accuracy:.3f}", f"{r.precision:.3f}", f"{r.recall:.3f}",
+            f"{int(r.false_positives)}", f"{int(r.false_negatives)}", f"{r.fpr_legit_blocked*100:.1f}%"
+        ])
+    s += [table(thr_rows, [2.0 * cm, 2.0 * cm, 2.0 * cm, 1.8 * cm, 3.4 * cm, 3.4 * cm, 2.0 * cm]), Spacer(1, 4)]
+    s += [P("Table 6: Impact of varying the MLP decision threshold on legitimate-user blocking vs. missed threats.", CAPTION)]
+    s += figure("14_threshold_tradeoff.png", "Figure 14: Ethical trade-off between blocking legitimate sites (FPR) and missing phishing threats (FNR).", 12.5)
+
+    s += [P("8.2 Biased Training Data Simulation", H2)]
+    bias_rows = [["Training Scenario", "Evaluated On", "Accuracy", "Recall", "Legit Blocked (FPR)"]]
+    for _, r in bias_df.iterrows():
+        bias_rows.append([r.scenario, r.eval_source, f"{r.accuracy:.3f}", f"{r.recall:.3f}", f"{r.fpr_legit_blocked*100:.1f}%"])
+    s += [table(bias_rows, [4.8 * cm, 3.8 * cm, 2.4 * cm, 2.2 * cm, 3.6 * cm]), Spacer(1, 4)]
+    s += [P("Table 7: Performance disparity when Dataset B is omitted from training.", CAPTION)]
+    s += figure("15_bias_simulation.png", "Figure 15: Accuracy drop and unfair blocking rate (FPR) on underrepresented websites.", 12.5)
+
+    s += [P("8.3 Ethical Risks, Privacy Concerns & Explainability", H2)]
+    s += bullets(
+        [
+            "<b>Ethical risks (False Positives):</b> At threshold 0.10, recall reaches 97.7% but 291 legitimate sites (21.7%) are wrongly blocked. Automated blocking without human appeal can cause denial-of-service to legitimate businesses.",
+            "<b>Data bias & fairness:</b> Training only on Dataset A causes accuracy on Dataset B to drop from 89.3% to 76.0% and nearly triples the false-positive blocking rate (12.7% to 34.5%).",
+            "<b>Privacy concerns:</b> Inspecting live URLs, query strings, and web traffic logs in production can expose sensitive user browsing history or session tokens unless telemetry is anonymised.",
+            "<b>Explainability limitations:</b> Unlike a shallow Decision Tree whose rules an analyst can audit, the MLP Neural Network is opaque and requires post-hoc explanation (e.g., SHAP/LIME) before blocking users.",
+        ]
+    )
+
+    # ---------------- 9. Limitations / Conclusion ----------------
+    s += [P("9. Limitations", H1)]
     s += bullets(
         [
             "<b>Harmonisation is an inference.</b> Reversing Dataset B's feature polarity rests on the internal evidence that the codes contradict the documented "
@@ -471,10 +511,9 @@ def main() -> None:
             "<b>Few distinct profiles.</b> 9 coded features give about 1,500 profiles, so random test splits are optimistic; the unseen-profile figures are more cautious but based on few rows.",
             "<b>Pre-engineered features.</b> The data holds coded indicators, not raw URLs or page content, so the models cannot see anything the original feature extraction missed. "
             "The datasets are also snapshots, and phishing tactics change.",
-            "<b>Scope.</b> This report covers Tasks 1-4. Task 5 (ethical simulation and reflection) is not included.",
         ]
     )
-    s += [P("9. Conclusion", H1)]
+    s += [P("10. Conclusion", H1)]
     s += [
         P(
             f"Two UCI phishing datasets were converted from ARFF to CSV and merged by row-wise union on their {len(ms['shared_features'])} shared features, giving {n:,} labelled "

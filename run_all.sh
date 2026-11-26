@@ -7,6 +7,8 @@ python src/01_validate_setup.py      # Task 1
 python src/02_eda.py                 # Task 2
 python src/03_ml_classification.py   # Task 3
 python src/04_dl_comparison.py       # Task 4
+python src/05_ethical_reflection.py  # Task 5
 python src/validate_merge.py         # merge validation + sensitivity
 python src/validate_feature_subset.py # 6 vs 9 feature sensitivity
 python src/make_report.py            # report/Technical_Report.pdf
+python src/make_word_report.py       # report/Capstone_Project_Report_Yatharth_Chopra.docx

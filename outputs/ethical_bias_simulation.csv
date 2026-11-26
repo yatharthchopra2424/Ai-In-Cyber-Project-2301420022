@@ -1,0 +1,5 @@
+scenario,eval_source,test_rows,accuracy,recall,fpr_legit_blocked,false_positives,false_negatives
+Balanced Training (A + B),Dataset A (UCI 327),2211,0.9285,0.9071,0.0544,67,91
+Balanced Training (A + B),Dataset B (UCI 379),271,0.893,0.9068,0.1273,14,15
+Biased Training (Dataset A Only),Dataset A (UCI 327),2211,0.9204,0.9112,0.0723,89,87
+Biased Training (Dataset A Only),Dataset B (UCI 379),271,0.7601,0.8323,0.3455,38,27

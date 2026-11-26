@@ -39,6 +39,8 @@ def test_outputs_generated():
         "ml_results.csv",
         "model_comparison.csv",
         "model_comparison_repeated.csv",
+        "ethical_threshold_tradeoff.csv",
+        "ethical_bias_simulation.csv",
     ]
     for name in expected:
         assert (OUT_DIR / name).exists(), f"Missing output: {name}"

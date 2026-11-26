@@ -13,12 +13,13 @@
 
 Phishing remains one of the most prevalent initial-access vectors in cybersecurity, deceiving users into disclosing credentials on spoofed websites. Static blocklists only catch previously reported domains, whereas supervised Machine Learning and Deep Learning models learn combinations of URL, SSL/TLS, and HTML structural indicators to flag previously unseen threats.
 
-This capstone project implements an end-to-end, reproducible threat detection pipeline across **four structured assignments (Tasks 1–4)**:
+This capstone project implements an end-to-end, reproducible threat detection pipeline across **all five tasks (Tasks 1–5, full 100-mark rubric)**:
 
-1. **Assignment 1 — Environment Setup & Schema Harmonization:** Validate the Python ML/DL environment, convert two raw UCI `.arff` datasets to `.csv`, perform a row-wise union on their **9 shared attributes**, and resolve a discovered feature-polarity inversion in Dataset B.
-2. **Assignment 2 — Cyber Threat Landscape Analysis (EDA):** Analyse class balance, feature code distributions (`-1 = Phishy`, `0 = Suspicious`, `+1 = Legitimate`), cumulative red-flag risk, Spearman correlation, Mutual Information, and cross-source alignment.
-3. **Assignment 3 — Classical Machine Learning Classification:** Train and evaluate **Logistic Regression**, **Decision Tree** (`max_depth=6`), and **Random Forest** (`n_estimators=200, max_depth=12`) using leak-free `scikit-learn` `Pipeline`s with one-hot encoding.
-4. **Assignment 4 — Deep Learning vs. Classical ML & Validation:** Compare a feed-forward **Neural Network (`MLPClassifier`, 32 → 16, ReLU, Adam, early stopping)** against all three classical models on Accuracy, Precision, Recall, F1, **ROC-AUC**, unseen-profile generalisation, training/prediction latency, 5-split stability (`mean ± std`), and merge/feature-subset sensitivity.
+1. **Task 1 — Environment Setup & Schema Harmonization:** Validate the Python ML/DL environment, convert two raw UCI `.arff` datasets to `.csv`, perform a row-wise union on their **9 shared attributes**, and resolve a discovered feature-polarity inversion in Dataset B.
+2. **Task 2 — Cyber Threat Landscape Analysis (EDA):** Analyse class balance, feature code distributions (`-1 = Phishy`, `0 = Suspicious`, `+1 = Legitimate`), cumulative red-flag risk, Spearman correlation, Mutual Information, and cross-source alignment.
+3. **Task 3 — Classical Machine Learning Classification:** Train and evaluate **Logistic Regression**, **Decision Tree** (`max_depth=6`), and **Random Forest** (`n_estimators=200, max_depth=12`) using leak-free `scikit-learn` `Pipeline`s with one-hot encoding.
+4. **Task 4 — Deep Learning vs. Classical ML & Validation:** Compare a feed-forward **Neural Network (`MLPClassifier`, 32 → 16, ReLU, Adam, early stopping)** against all three classical models on Accuracy, Precision, Recall, F1, **ROC-AUC**, unseen-profile generalisation, training/prediction latency, 5-split stability (`mean ± std`), and merge/feature-subset sensitivity.
+5. **Task 5 — Ethical Reflection & AI Challenges:** Simulate **threshold tuning** (legitimate-user blocking vs. missed threats) and **biased training data** (omitting Dataset B causes accuracy on B to drop from `89.3%` to `76.0%` and FPR to nearly triple from `12.7%` to `34.5%`), and document ethical, privacy, and explainability limitations.
 
 ---
 
@@ -34,10 +35,11 @@ Ai_cyber_capstone/
 │   │   └── website_phishing_uci379.csv    # Converted Dataset B
 │   └── merged_phishing.csv                # Harmonised union (12,408 x 13)
 ├── notebooks/
-│   ├── 01_setup_and_data_pipeline.ipynb   # Assignment 1 (executed)
-│   ├── 02_eda_threat_landscape.ipynb      # Assignment 2 (executed)
-│   ├── 03_ml_classification.ipynb         # Assignment 3 (executed)
-│   └── 04_dl_vs_ml_comparison.ipynb       # Assignment 4 (executed)
+│   ├── 01_setup_and_data_pipeline.ipynb   # Task 1 (executed)
+│   ├── 02_eda_threat_landscape.ipynb      # Task 2 (executed)
+│   ├── 03_ml_classification.ipynb         # Task 3 (executed)
+│   ├── 04_dl_vs_ml_comparison.ipynb       # Task 4 (executed)
+│   └── 05_ethical_reflection.ipynb        # Task 5 (executed)
 ├── src/
 │   ├── common.py                          # Shared paths, constants, profile helper
 │   ├── 00a_arff_to_csv.py                 # ARFF -> CSV parser & assertions
@@ -48,9 +50,11 @@ Ai_cyber_capstone/
 │   ├── evaluation.py                      # Metrics (Acc, Prec, Rec, F1, ROC-AUC, timing)
 │   ├── 03_ml_classification.py            # Classical ML models & plots (07-08)
 │   ├── 04_dl_comparison.py                # MLP vs ML, 5-split CV, ROC & plots (09-11, 13)
+│   ├── 05_ethical_reflection.py           # Threshold & bias simulations & plots (14-15)
 │   ├── validate_merge.py                  # Cross-source transfer & suspicious-row check (plot 12)
 │   ├── validate_feature_subset.py         # 6 vs 9 feature sensitivity analysis
-│   └── make_report.py                     # Automated PDF report generator
+│   ├── make_report.py                     # Automated PDF report generator
+│   └── make_word_report.py                # Automated Word (.docx) report generator
 ├── outputs/
 │   ├── plots/                             # 13 publication-ready figures + notebook screenshots
 │   └── *.csv / *.json / *.txt             # Reproducible metrics & summaries
