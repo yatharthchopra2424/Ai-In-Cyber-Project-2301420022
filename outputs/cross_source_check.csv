@@ -1,0 +1,9 @@
+model,direction,variant,accuracy,f1
+Logistic Regression,A -> B,naive,0.3548,0.4215
+Logistic Regression,A -> B,harmonised,0.6792,0.7341
+Logistic Regression,B -> A,naive,0.288,0.361
+Logistic Regression,B -> A,harmonised,0.6712,0.6855
+Decision Tree,A -> B,naive,0.3607,0.4584
+Decision Tree,A -> B,harmonised,0.6704,0.7489
+Decision Tree,B -> A,naive,0.4479,0.5669
+Decision Tree,B -> A,harmonised,0.6302,0.6332

@@ -1,0 +1,7 @@
+features,model,accuracy_mean,accuracy_std,f1_mean,f1_std,cross_source_acc_AtoB,cross_source_acc_BtoA
+9 shared features (main),Logistic Regression,0.9001,0.0021,0.8893,0.0027,0.6792,0.6712
+9 shared features (main),Decision Tree,0.906,0.0052,0.8968,0.0062,0.6704,0.6302
+9 shared features (main),Neural Network (MLP),0.9178,0.0059,0.9104,0.006,,
+6 verifiable features,Logistic Regression,0.8987,0.0027,0.8874,0.0035,0.6874,0.6292
+6 verifiable features,Decision Tree,0.9106,0.0044,0.9028,0.0048,0.6075,0.5427
+6 verifiable features,Neural Network (MLP),0.9141,0.0036,0.9061,0.0031,,

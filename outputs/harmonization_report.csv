@@ -1,0 +1,10 @@
+feature,corr_A,corr_B_raw,action,corr_B_after,share_minus1_A,share_minus1_B_after
+SFH,0.219,-0.728,polarity reversed (x -> -x),0.728,0.763,0.567
+popUpWidnow,0.0,-0.536,polarity reversed (x -> -x),0.536,0.193,0.135
+SSLfinal_State,0.736,-0.551,polarity reversed (x -> -x),0.551,0.322,0.555
+Request_URL,0.253,-0.26,polarity reversed (x -> -x),0.26,0.407,0.233
+URL_of_Anchor,0.701,-0.295,polarity reversed (x -> -x),0.295,0.297,0.426
+web_traffic,0.365,0.258,kept as is,0.258,0.24,0.325
+URL_Length,0.053,-0.199,polarity reversed (x -> -x),0.199,0.81,0.265
+age_of_domain,0.121,-0.243,polarity reversed (x -> -x),0.243,0.469,0.61
+having_IP_Address,0.094,-0.062,"recoded {0,1} -> {-1,1}, polarity reversed",0.062,0.343,0.115

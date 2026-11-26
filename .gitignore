@@ -1,0 +1,20 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS / editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Large or regenerable data (keep the generator script, not the CSV, if you prefer)
+# data/*.csv
+
+# Reference folder (local only, not part of submission)
+Some_other_people refrence/

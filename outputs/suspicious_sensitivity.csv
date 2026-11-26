@@ -1,0 +1,7 @@
+variant,rows,model,accuracy,f1
+suspicious counted as threat (main),12408,Logistic Regression,0.8985,0.8877
+suspicious counted as threat (main),12408,Decision Tree,0.9053,0.8957
+suspicious counted as threat (main),12408,Neural Network (MLP),0.9247,0.9171
+suspicious rows removed,12305,Logistic Regression,0.9049,0.8939
+suspicious rows removed,12305,Decision Tree,0.9171,0.9056
+suspicious rows removed,12305,Neural Network (MLP),0.9273,0.92

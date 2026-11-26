@@ -1,0 +1,30 @@
+Rows: 12408   Columns: 13   Missing values: 0
+Class balance: legitimate=6705 (54.0%), threat=5703 (46.0%)
+
+Result code by source (1 legitimate, 0 suspicious, -1 phishing):
+result_raw                 -1    0     1
+source                                  
+UCI327_PhishingWebsites  4898    0  6157
+UCI379_WebsitePhishing    702  103   548
+
+Spearman correlation with threat label (negative = value +1 means legitimate):
+SSLfinal_State      -0.711
+URL_of_Anchor       -0.630
+web_traffic         -0.358
+SFH                 -0.258
+Request_URL         -0.247
+age_of_domain       -0.142
+having_IP_Address   -0.075
+popUpWidnow         -0.074
+URL_Length          -0.035
+
+Mutual information with threat label (nats):
+SSLfinal_State       0.305
+URL_of_Anchor        0.259
+web_traffic          0.073
+SFH                  0.035
+Request_URL          0.031
+age_of_domain        0.010
+popUpWidnow          0.008
+URL_Length           0.004
+having_IP_Address    0.003

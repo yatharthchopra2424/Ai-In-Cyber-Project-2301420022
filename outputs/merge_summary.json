@@ -1,0 +1,32 @@
+{
+  "rows_total": 12408,
+  "rows_A": 11055,
+  "rows_B": 1353,
+  "shared_features": [
+    "SFH",
+    "popUpWidnow",
+    "SSLfinal_State",
+    "Request_URL",
+    "URL_of_Anchor",
+    "web_traffic",
+    "URL_Length",
+    "age_of_domain",
+    "having_IP_Address"
+  ],
+  "features_dropped_from_A": 21,
+  "label_counts": {
+    "0": 6705,
+    "1": 5703
+  },
+  "result_raw_counts": {
+    "-1": 5600,
+    "0": 103,
+    "1": 6705
+  },
+  "missing_values": 0,
+  "duplicate_rows_feature_label": 10716,
+  "unique_feature_profiles": 1508,
+  "profiles_with_mixed_labels": 184,
+  "lookup_table_ceiling_accuracy": 0.9368149580915538,
+  "profiles_in_both_sources": 88
+}
