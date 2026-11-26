@@ -18,3 +18,6 @@ __pycache__/
 
 # Reference folder (local only, not part of submission)
 Some_other_people refrence/
+
+# Office temporary lock files
+~$*.docx

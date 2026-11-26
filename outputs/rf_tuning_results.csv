@@ -1,0 +1,7 @@
+param_clf__n_estimators,param_clf__max_depth,mean_test_score,std_test_score,rank_test_score
+100,12,0.9135,0.0068,1
+200,12,0.9131,0.0067,2
+100,,0.9129,0.0053,3
+200,,0.9124,0.0068,4
+200,8,0.9097,0.0079,5
+100,8,0.9093,0.0073,6

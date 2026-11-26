@@ -18,6 +18,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 
@@ -88,7 +89,24 @@ def main() -> None:
     pd.DataFrame(by_source).round(4).to_csv(OUT_DIR / "ml_results_by_source.csv", index=False)
     print("\nSummary:\n", table.round(4).to_string(index=False))
     print("\nBy source:\n", pd.DataFrame(by_source).round(4).to_string(index=False))
-    print("\nTop indicators (Decision Tree):\n", imp["Decision Tree (importance)"].iloc[::-1].head(4).round(3).to_string())
+    print("\nTop indicators (Random Forest):\n", imp["Random Forest (importance)"].iloc[::-1].head(4).round(3).to_string())
+
+    # Hyperparameter tuning for Random Forest (3-fold StratifiedKFold)
+    rf_pipe = Pipeline([
+        ("prep", build_preprocessor()),
+        ("clf", RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=-1)),
+    ])
+    grid = GridSearchCV(
+        rf_pipe,
+        param_grid={"clf__n_estimators": [100, 200], "clf__max_depth": [8, 12, None]},
+        cv=StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_STATE),
+        scoring="f1",
+        n_jobs=-1,
+    )
+    grid.fit(X_train, y_train)
+    cv_res = pd.DataFrame(grid.cv_results_)[["param_clf__n_estimators", "param_clf__max_depth", "mean_test_score", "std_test_score", "rank_test_score"]]
+    cv_res.sort_values("rank_test_score").round(4).to_csv(OUT_DIR / "rf_tuning_results.csv", index=False)
+    print(f"\nBest Tuned Random Forest Params: {grid.best_params_} | CV F1: {grid.best_score_:.4f}")
 
 
 if __name__ == "__main__":
