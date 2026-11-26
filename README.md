@@ -90,12 +90,13 @@ Although both UCI pages document `+1 = legitimate`, `0 = suspicious`, `-1 = phis
 
 Because the 9 categorical features yield **1,508 unique profiles** across 12,408 rows (with 184 mixed-label profiles), the theoretical look-up ceiling accuracy on these 9 features is **93.68%**.
 
-| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Acc. (Unseen Profiles) | 5-Split Acc. (`mean ± std`) | Train Time (s) |
+| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | PR-AUC | 5-Split Acc. (`mean ± std`) | Train Time (s) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Logistic Regression** | `0.8985` | `0.9030` | `0.8729` | `0.8877` | `0.9643` | `0.7213` | `0.9001 ± 0.0021` | `0.021` |
-| **Decision Tree** (`depth=6`) | `0.9053` | `0.9074` | `0.8843` | `0.8957` | `0.9705` | `0.8361` | `0.9060 ± 0.0052` | `0.020` |
-| **Random Forest** (`200 trees`) | **`0.9255`** | **`0.9322`** | `0.9036` | **`0.9177`** | **`0.9797`** | `0.8525` | **`0.9242 ± 0.0027`** | `0.296` |
-| **Neural Network (MLP 32→16)** | `0.9247` | `0.9274` | **`0.9071`** | `0.9171` | `0.9762` | **`0.8689`** | `0.9178 ± 0.0059` | `0.438` |
+| **Logistic Regression** | `0.8985` | `0.9030` | `0.8729` | `0.8877` | `0.9643` | `0.9596` | `0.9001 ± 0.0021` | `0.041` |
+| **Decision Tree** (`depth=6`) | `0.9053` | `0.9074` | `0.8843` | `0.8957` | `0.9705` | `0.9638` | `0.9060 ± 0.0052` | `0.038` |
+| **Random Forest** (`200 trees`) | `0.9255` | `0.9322` | **`0.9036`** | **`0.9177`** | **`0.9797`** | **`0.9786`** | `0.9242 ± 0.0027` | `0.515` |
+| **Gradient Boosting** (`HistGB`) | `0.9255` | `0.9338` | `0.9018` | `0.9175` | `0.9788` | `0.9774` | **`0.9251 ± 0.0030`** | `2.059` |
+| **PyTorch DNN** (`128→64→32`) | **`0.9259`** | **`0.9370`** | `0.8992` | **`0.9177`** | `0.9776` | `0.9766` | `0.9218 ± 0.0045` | `8.241` |
 
 ### Key Takeaways
 - **Top Threat Indicators:** `SSLfinal_State` (Spearman `-0.711`, MI `0.305` nats) and `URL_of_Anchor` (`-0.630`, MI `0.259` nats) dominate both EDA rankings and model feature importances, followed by `web_traffic`, `SFH`, and `Request_URL`.

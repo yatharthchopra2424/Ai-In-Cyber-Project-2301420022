@@ -9,20 +9,21 @@ Output: outputs/ml_results.csv, outputs/ml_results_by_source.csv, plots 07 and 0
 
 Author : Yatharth Chopra (Roll No. 2301420022)
 """
+import joblib
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 
-from common import FEATURES, OUT_DIR, PLOT_DIR, RANDOM_STATE, ensure_dirs, load_data
+from common import FEATURES, MODEL_DIR, OUT_DIR, PLOT_DIR, RANDOM_STATE, ensure_dirs, load_data
 from evaluation import fit_and_score, metrics_by_source
 from preprocessing import build_preprocessor, split_data
 
@@ -43,10 +44,11 @@ def main() -> None:
         "Logistic Regression": LogisticRegression(max_iter=1000, random_state=RANDOM_STATE),
         "Decision Tree": DecisionTreeClassifier(max_depth=6, random_state=RANDOM_STATE),
         "Random Forest": RandomForestClassifier(n_estimators=200, max_depth=12, random_state=RANDOM_STATE, n_jobs=-1),
+        "Gradient Boosting": HistGradientBoostingClassifier(max_iter=200, max_depth=8, learning_rate=0.08, random_state=RANDOM_STATE),
     }
 
     results, by_source, fitted = [], [], {}
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4))
+    fig, axes = plt.subplots(1, 4, figsize=(17, 4))
     for ax, (name, clf) in zip(axes, models.items()):
         pipe = Pipeline([("prep", build_preprocessor()), ("clf", clf)])
         res, pred = fit_and_score(pipe, X_train, X_test, y_train, y_test)
@@ -106,7 +108,9 @@ def main() -> None:
     grid.fit(X_train, y_train)
     cv_res = pd.DataFrame(grid.cv_results_)[["param_clf__n_estimators", "param_clf__max_depth", "mean_test_score", "std_test_score", "rank_test_score"]]
     cv_res.sort_values("rank_test_score").round(4).to_csv(OUT_DIR / "rf_tuning_results.csv", index=False)
+    joblib.dump(grid.best_estimator_, MODEL_DIR / "best_rf_pipeline.joblib")
     print(f"\nBest Tuned Random Forest Params: {grid.best_params_} | CV F1: {grid.best_score_:.4f}")
+    print(f"Saved tuned pipeline -> {MODEL_DIR / 'best_rf_pipeline.joblib'}")
 
 
 if __name__ == "__main__":

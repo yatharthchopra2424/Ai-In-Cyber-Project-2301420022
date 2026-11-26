@@ -15,6 +15,7 @@ RAW_DIR = DATA_DIR / "raw"
 OUT_DIR = ROOT / "outputs"
 PLOT_DIR = OUT_DIR / "plots"
 REPORT_DIR = ROOT / "report"
+MODEL_DIR = ROOT / "models"
 
 # --- source files -----------------------------------------------------------
 ARFF_A = RAW_DIR / "Training_Dataset.arff"  # UCI "Phishing Websites"  (id 327)
@@ -50,7 +51,7 @@ CODE_NAMES = {-1: "Phishy", 0: "Suspicious", 1: "Legitimate"}
 
 
 def ensure_dirs() -> None:
-    for d in (RAW_DIR, PLOT_DIR, REPORT_DIR):
+    for d in (RAW_DIR, PLOT_DIR, REPORT_DIR, MODEL_DIR):
         d.mkdir(parents=True, exist_ok=True)
 
 

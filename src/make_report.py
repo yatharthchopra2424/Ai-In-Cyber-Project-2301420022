@@ -95,7 +95,7 @@ def main() -> None:
     thr_df = pd.read_csv(OUT_DIR / "ethical_threshold_tradeoff.csv")
     bias_df = pd.read_csv(OUT_DIR / "ethical_bias_simulation.csv")
 
-    lr, dt, rf_m, mlp = "Logistic Regression", "Decision Tree", "Random Forest", "Neural Network (MLP)"
+    lr, dt, rf_m, gb_m, dnn_m = "Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "PyTorch DNN"
     n, nA, nB = ms["rows_total"], ms["rows_A"], ms["rows_B"]
     n_leg, n_thr = ms["label_counts"]["0"], ms["label_counts"]["1"]
     corr = eda["corr_with_label"]
@@ -225,44 +225,42 @@ def main() -> None:
             "Logistic Regression, Decision Tree (max_depth=6), and Random Forest (200 trees, max_depth=12, further verified via 3-fold GridSearchCV)."
         )
     ]
-    rows = [["Model", "Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC", "Unseen Profiles"]]
-    for m in (lr, dt, rf_m):
+    rows = [["Model", "Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC", "PR-AUC"]]
+    for m in (lr, dt, rf_m, gb_m):
         r = ml.loc[m]
-        rows.append([m, f"{r.accuracy:.3f}", f"{r.precision:.3f}", f"{r.recall:.3f}", f"{r.f1:.3f}", f"{r.roc_auc:.3f}", f"{r.acc_unseen_profiles:.3f}"])
-    s += [table(rows, [4.0 * cm, 2.0 * cm, 2.0 * cm, 2.0 * cm, 1.9 * cm, 2.1 * cm, 2.8 * cm]), Spacer(1, 4)]
+        rows.append([m, f"{r.accuracy:.3f}", f"{r.precision:.3f}", f"{r.recall:.3f}", f"{r.f1:.3f}", f"{r.roc_auc:.3f}", f"{r.pr_auc:.3f}"])
+    s += [table(rows, [4.2 * cm, 2.0 * cm, 2.0 * cm, 2.0 * cm, 2.0 * cm, 2.2 * cm, 2.2 * cm]), Spacer(1, 4)]
     s += [P("Table 3: Classical ML performance on the held-out test set.", CAPTION)]
     s += figure("07_ml_confusion_matrices.png", "Figure 6: Confusion matrices for Logistic Regression, Decision Tree, and Random Forest.", 14.5)
     s += figure("08_feature_importance.png", "Figure 7: Relative indicator importance summed across one-hot encoded columns.", 11.5)
 
     # ---------------- 6. Task 4 ----------------
-    s += [P("6. Task 4 — Deep Learning (MLP) vs. Classical Machine Learning", H1)]
+    s += [P("6. Task 4 — PyTorch Deep Neural Network vs. Classical ML", H1)]
     s += [
         P(
-            "A feed-forward Neural Network (<i>MLPClassifier</i>, hidden layers 32 -> 16, ReLU, Adam, early stopping on a 10% "
-            "validation split) was benchmarked against all three classical models on the identical split and across 5 repeated "
-            "stratified random splits."
+            "A 3-hidden-layer PyTorch Deep Neural Network (<i>PhishingDNN</i>: 27 -> 128 -> Dropout(0.3) -> 64 -> Dropout(0.2) -> "
+            "32 -> 1, trained with BCEWithLogitsLoss, Adam, and validation early stopping) was benchmarked against all four "
+            "classical models on the identical split and across 5 repeated stratified random splits."
         )
     ]
-    rows = [["Model", "Accuracy", "F1", "Recall", "ROC-AUC", "Train (s)", "5-Split Acc. (mean +/- sd)"]]
-    for m in (lr, dt, rf_m, mlp):
+    rows = [["Model", "Accuracy", "F1", "ROC-AUC", "PR-AUC", "Train (s)", "5-Split Acc. (mean +/- sd)"]]
+    for m in (lr, dt, rf_m, gb_m, dnn_m):
         r, q = cmp_.loc[m], rep.loc[m]
-        rows.append([m, f"{r.accuracy:.3f}", f"{r.f1:.3f}", f"{r.recall:.3f}", f"{r.roc_auc:.3f}", f"{r.train_time_s:.3f}",
+        rows.append([m, f"{r.accuracy:.3f}", f"{r.f1:.3f}", f"{r.roc_auc:.3f}", f"{r.pr_auc:.3f}", f"{r.train_time_s:.2f}",
                      f"{q.accuracy_mean:.3f} +/- {q.accuracy_std:.3f}"])
-    s += [table(rows, [3.9 * cm, 1.8 * cm, 1.6 * cm, 1.7 * cm, 2.0 * cm, 1.8 * cm, 4.2 * cm]), Spacer(1, 4)]
-    s += [P("Table 4: Comprehensive benchmark across classical ML and Neural Network (MLP).", CAPTION)]
-    s += figure("09_model_comparison.png", "Figure 8: Accuracy, Precision, Recall, F1, and ROC-AUC across all four models.", 13.5)
+    s += [table(rows, [3.8 * cm, 1.8 * cm, 1.6 * cm, 2.0 * cm, 2.0 * cm, 1.8 * cm, 4.0 * cm]), Spacer(1, 4)]
+    s += [P("Table 4: Comprehensive benchmark across classical ML and PyTorch DNN.", CAPTION)]
+    s += figure("09_model_comparison.png", "Figure 8: Accuracy, Precision, Recall, F1, ROC-AUC, and PR-AUC across all five models.", 13.5)
     s += figure("13_roc_curves.png", "Figure 9: Receiver Operating Characteristic (ROC) curves on the test set.", 11.5)
     s += figure("10_training_time.png", "Figure 10: Training and inference latency comparison.", 12.5)
-    s += figure("11_mlp_learning_curve.png", "Figure 11: MLP training loss and validation error with early stopping.", 10.0)
+    s += figure("11_mlp_learning_curve.png", "Figure 11: PyTorch DNN training and validation BCE loss with early stopping.", 10.0)
     s += [
         P(
-            f"<b>Key Comparison Findings:</b> On this 9-feature tabular dataset, the ensemble <b>Random Forest</b> achieves the highest "
-            f"5-split mean accuracy ({pct(rep.loc[rf_m].accuracy_mean, 2)}) and ROC-AUC ({rep.loc[rf_m].roc_auc_mean:.4f}) while "
-            f"training in {rep.loc[rf_m].train_time_s_mean:.2f}s. The <b>MLP</b> achieves the highest single-split recall "
-            f"({cmp_.loc[mlp].recall:.3f}) and unseen-profile accuracy ({pct(cmp_.loc[mlp].acc_unseen_profiles)}), demonstrating "
-            f"strong non-linear generalisation at a modest latency cost ({cmp_.loc[mlp].train_time_s:.2f}s). Both approach the "
-            f"{pct(ms['lookup_table_ceiling_accuracy'])} theoretical ceiling. Excluding the 103 suspicious rows shifts accuracy by "
-            f"less than 1.5 percentage points without altering model rankings."
+            f"<b>Key Comparison Findings:</b> On this 9-feature tabular dataset, <b>PyTorch DNN</b> achieves the highest single-split "
+            f"accuracy ({pct(cmp_.loc[dnn_m].accuracy, 2)}) and precision ({cmp_.loc[dnn_m].precision:.3f}), while <b>Gradient Boosting</b> "
+            f"achieves the highest 5-split mean accuracy ({pct(rep.loc[gb_m].accuracy_mean, 2)}) and <b>Random Forest</b> achieves the "
+            f"highest ROC-AUC ({cmp_.loc[rf_m].roc_auc:.4f}) and PR-AUC ({cmp_.loc[rf_m].pr_auc:.4f}). All three top models approach "
+            f"the {pct(ms['lookup_table_ceiling_accuracy'])} theoretical ceiling."
         )
     ]
 

@@ -1,5 +1,6 @@
-model,accuracy_mean,accuracy_std,f1_mean,f1_std,recall_mean,recall_std,roc_auc_mean,roc_auc_std,acc_unseen_profiles_mean,acc_unseen_profiles_std,train_time_s_mean,train_time_s_std
-Logistic Regression,0.9001,0.0021,0.8893,0.0027,0.8729,0.0069,0.9619,0.0027,0.7363,0.0567,0.0192,0.0005
-Decision Tree,0.906,0.0052,0.8968,0.0062,0.8883,0.0115,0.9695,0.0019,0.8141,0.0387,0.019,0.0008
-Random Forest,0.9242,0.0027,0.9161,0.0032,0.9008,0.0059,0.9785,0.0016,0.8648,0.0306,0.2852,0.0099
-Neural Network (MLP),0.9178,0.0059,0.9104,0.006,0.9076,0.0083,0.9748,0.0024,0.8326,0.0388,0.5131,0.0626
+model,accuracy_mean,accuracy_std,f1_mean,f1_std,recall_mean,recall_std,roc_auc_mean,roc_auc_std,pr_auc_mean,pr_auc_std,acc_unseen_profiles_mean,acc_unseen_profiles_std,train_time_s_mean,train_time_s_std
+Logistic Regression,0.9001,0.0021,0.8893,0.0027,0.8729,0.0069,0.9619,0.0027,0.9551,0.0056,0.7363,0.0567,0.0296,0.0065
+Decision Tree,0.906,0.0052,0.8968,0.0062,0.8883,0.0115,0.9695,0.0019,0.9599,0.0035,0.8141,0.0387,0.0295,0.01
+Random Forest,0.9242,0.0027,0.9161,0.0032,0.9008,0.0059,0.9785,0.0016,0.977,0.0021,0.8648,0.0306,0.4529,0.1589
+Gradient Boosting,0.9251,0.003,0.9171,0.0034,0.9022,0.0047,0.9784,0.0019,0.9767,0.0024,0.8631,0.0266,0.6682,0.0543
+PyTorch DNN,0.9218,0.0045,0.9144,0.0042,0.9074,0.011,0.9768,0.0023,0.975,0.0025,0.8543,0.0306,6.1877,2.0328

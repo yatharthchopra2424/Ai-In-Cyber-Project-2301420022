@@ -5,5 +5,7 @@ Decision Tree,Dataset A (UCI 327),2211,0.9077,0.9076,0.8816,0.8944
 Decision Tree,Dataset B (UCI 379),271,0.8856,0.9062,0.9006,0.9034
 Random Forest,Dataset A (UCI 327),2211,0.9317,0.9368,0.9071,0.9217
 Random Forest,Dataset B (UCI 379),271,0.8745,0.9045,0.882,0.8931
-Neural Network (MLP),Dataset A (UCI 327),2211,0.9285,0.9299,0.9071,0.9184
-Neural Network (MLP),Dataset B (UCI 379),271,0.893,0.9125,0.9068,0.9097
+Gradient Boosting,Dataset A (UCI 327),2211,0.9326,0.9378,0.9082,0.9228
+Gradient Boosting,Dataset B (UCI 379),271,0.8672,0.9085,0.8634,0.8854
+PyTorch DNN,Dataset A (UCI 327),2211,0.9303,0.9394,0.901,0.9198
+PyTorch DNN,Dataset B (UCI 379),271,0.8893,0.9226,0.8882,0.9051

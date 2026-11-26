@@ -227,10 +227,10 @@ def main() -> None:
         "classical models were trained: Logistic Regression, Decision Tree (max_depth=6), and Random Forest (200 trees, max_depth=12)."
     )
     ml_rows = []
-    for m in ["Logistic Regression", "Decision Tree", "Random Forest"]:
+    for m in ["Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting"]:
         r = ml.loc[m]
-        ml_rows.append([m, f"{r.accuracy:.4f}", f"{r.precision:.4f}", f"{r.recall:.4f}", f"{r.f1:.4f}", f"{r.roc_auc:.4f}", f"{r.acc_unseen_profiles:.4f}"])
-    add_styled_table(doc, ["Model", "Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC", "Acc. (Unseen)"], ml_rows)
+        ml_rows.append([m, f"{r.accuracy:.4f}", f"{r.precision:.4f}", f"{r.recall:.4f}", f"{r.f1:.4f}", f"{r.roc_auc:.4f}", f"{r.pr_auc:.4f}"])
+    add_styled_table(doc, ["Model", "Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC", "PR-AUC"], ml_rows)
 
     add_figure(doc, PLOT_DIR / "07_ml_confusion_matrices.png", "Figure 5: Confusion matrices for Logistic Regression, Decision Tree, and Random Forest.", 6.0)
     add_figure(doc, PLOT_DIR / "08_feature_importance.png", "Figure 6: Relative indicator importance across classical ML models.", 5.5)
@@ -238,20 +238,20 @@ def main() -> None:
     doc.add_page_break()
 
     # ==================== 5. ASSIGNMENT 4 ====================
-    add_heading_1(doc, "5. Assignment 4 — Deep Learning (MLP) vs. Classical ML & Validation")
+    add_heading_1(doc, "5. Assignment 4 — PyTorch Deep Neural Network vs. Classical ML")
     doc.add_paragraph(
-        "A feed-forward Neural Network (MLPClassifier with hidden layers 32 -> 16, ReLU activation, Adam optimiser, "
-        "and early stopping on a 10% validation split) was compared against all three classical models on the exact "
-        "same split and across 5 repeated stratified random splits (mean +/- std)."
+        "A 3-hidden-layer PyTorch Deep Neural Network (PhishingDNN: 27 -> 128 -> Dropout(0.3) -> 64 -> Dropout(0.2) -> "
+        "32 -> 1, trained with BCEWithLogitsLoss, Adam, and validation early stopping) was compared against all four "
+        "classical models on the exact same split and across 5 repeated stratified random splits (mean +/- std)."
     )
     cmp_rows = []
-    for m in ["Logistic Regression", "Decision Tree", "Random Forest", "Neural Network (MLP)"]:
+    for m in ["Logistic Regression", "Decision Tree", "Random Forest", "Gradient Boosting", "PyTorch DNN"]:
         r, q = cmp_.loc[m], rep.loc[m]
         cmp_rows.append([
-            m, f"{r.accuracy:.4f}", f"{r.f1:.4f}", f"{r.recall:.4f}", f"{r.roc_auc:.4f}",
-            f"{r.train_time_s:.3f}s", f"{q.accuracy_mean:.4f} +/- {q.accuracy_std:.4f}"
+            m, f"{r.accuracy:.4f}", f"{r.f1:.4f}", f"{r.roc_auc:.4f}", f"{r.pr_auc:.4f}",
+            f"{r.train_time_s:.2f}s", f"{q.accuracy_mean:.4f} +/- {q.accuracy_std:.4f}"
         ])
-    add_styled_table(doc, ["Model", "Accuracy", "F1", "Recall", "ROC-AUC", "Train Time", "5-Split Acc. (mean +/- std)"], cmp_rows)
+    add_styled_table(doc, ["Model", "Accuracy", "F1", "ROC-AUC", "PR-AUC", "Train Time", "5-Split Acc. (mean +/- std)"], cmp_rows)
 
     add_figure(doc, PLOT_DIR / "09_model_comparison.png", "Figure 7: Detection performance comparison (Accuracy, Precision, Recall, F1, ROC-AUC).", 5.8)
     add_figure(doc, PLOT_DIR / "13_roc_curves.png", "Figure 8: ROC curves comparing Classical ML and Neural Network (MLP).", 5.0)
